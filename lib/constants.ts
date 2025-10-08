@@ -1,28 +1,43 @@
+// Runtime config helper
+const getConfig = () =>
+  typeof window !== 'undefined'
+    ? (window as any).__OZONE_CONFIG__
+    : undefined
+
 export const OAUTH_SCOPE = 'atproto transition:generic transition:chat.bsky'
 
 export const OZONE_SERVICE_DID =
-  process.env.NEXT_PUBLIC_OZONE_SERVICE_DID || undefined
+  getConfig()?.ozoneServiceDid ||
+  process.env.NEXT_PUBLIC_OZONE_SERVICE_DID ||
+  undefined
 
 export const OZONE_PUBLIC_URL =
-  process.env.NEXT_PUBLIC_OZONE_PUBLIC_URL || undefined
+  getConfig()?.ozonePublicUrl ||
+  process.env.NEXT_PUBLIC_OZONE_PUBLIC_URL ||
+  undefined
 
 export const PLC_DIRECTORY_URL =
+  getConfig()?.plcDirectoryUrl ||
   process.env.NEXT_PUBLIC_PLC_DIRECTORY_URL ||
   (process.env.NODE_ENV === 'development'
     ? 'http://localhost:2582'
     : 'https://plc.directory')
 
-export const QUEUE_CONFIG = process.env.NEXT_PUBLIC_QUEUE_CONFIG || '{}'
+export const QUEUE_CONFIG =
+  getConfig()?.queueConfig || process.env.NEXT_PUBLIC_QUEUE_CONFIG || '{}'
 
-export const QUEUE_SEED = process.env.NEXT_PUBLIC_QUEUE_SEED || ''
+export const QUEUE_SEED =
+  getConfig()?.queueSeed || process.env.NEXT_PUBLIC_QUEUE_SEED || ''
 
 export const SOCIAL_APP_URL =
+  getConfig()?.socialAppUrl ||
   process.env.NEXT_PUBLIC_SOCIAL_APP_URL ||
   (process.env.NODE_ENV === 'development'
     ? 'http://localhost:2584'
     : 'https://bsky.app')
 
 export const HANDLE_RESOLVER_URL =
+  getConfig()?.handleResolverUrl ||
   process.env.NEXT_PUBLIC_HANDLE_RESOLVER_URL ||
   (process.env.NODE_ENV === 'development'
     ? 'http://localhost:2584'
@@ -34,25 +49,35 @@ export const TRUSTED_VERIFIER_TAG = 'trusted-verifier'
 
 export const STARTER_PACK_OG_CARD_URL = `https://ogcard.cdn.bsky.app/start`
 
-export const NEW_ACCOUNT_MARKER_THRESHOLD_IN_DAYS = process.env
-  .NEXT_PUBLIC_NEW_ACCOUNT_MARKER_THRESHOLD_IN_DAYS
-  ? parseInt(process.env.NEXT_PUBLIC_NEW_ACCOUNT_MARKER_THRESHOLD_IN_DAYS)
-  : 7
+export const NEW_ACCOUNT_MARKER_THRESHOLD_IN_DAYS = parseInt(
+  getConfig()?.newAccountMarkerThresholdInDays ||
+    process.env.NEXT_PUBLIC_NEW_ACCOUNT_MARKER_THRESHOLD_IN_DAYS ||
+    '7'
+)
 
-export const YOUNG_ACCOUNT_MARKER_THRESHOLD_IN_DAYS = process.env
-  .NEXT_PUBLIC_YOUNG_ACCOUNT_MARKER_THRESHOLD_IN_DAYS
-  ? parseInt(process.env.NEXT_PUBLIC_YOUNG_ACCOUNT_MARKER_THRESHOLD_IN_DAYS)
-  : 30
+export const YOUNG_ACCOUNT_MARKER_THRESHOLD_IN_DAYS = parseInt(
+  getConfig()?.youngAccountMarkerThresholdInDays ||
+    process.env.NEXT_PUBLIC_YOUNG_ACCOUNT_MARKER_THRESHOLD_IN_DAYS ||
+    '30'
+)
 
 export const DOMAINS_ALLOWING_EMAIL_COMMUNICATION = (
-  process.env.NEXT_PUBLIC_DOMAINS_ALLOWING_EMAIL_COMMUNICATION || ''
+  getConfig()?.domainsAllowingEmailCommunication ||
+  process.env.NEXT_PUBLIC_DOMAINS_ALLOWING_EMAIL_COMMUNICATION ||
+  ''
 ).split(',')
 
-export const HIGH_PROFILE_FOLLOWER_THRESHOLD = process.env
-  .NEXT_PUBLIC_HIGH_PROFILE_FOLLOWER_THRESHOLD
-  ? parseInt(process.env.NEXT_PUBLIC_HIGH_PROFILE_FOLLOWER_THRESHOLD)
-  : Infinity
+export const HIGH_PROFILE_FOLLOWER_THRESHOLD =
+  getConfig()?.highProfileFollowerThreshold === 'Infinity'
+    ? Infinity
+    : parseInt(
+        getConfig()?.highProfileFollowerThreshold ||
+          process.env.NEXT_PUBLIC_HIGH_PROFILE_FOLLOWER_THRESHOLD ||
+          'Infinity'
+      ) || Infinity
 
 export const FALLBACK_VIDEO_URL = (
-  process.env.NEXT_PUBLIC_FALLBACK_VIDEO_URL || ''
+  getConfig()?.fallbackVideoUrl ||
+  process.env.NEXT_PUBLIC_FALLBACK_VIDEO_URL ||
+  ''
 ).split(':')

@@ -17,18 +17,6 @@ WORKDIR /usr/src/ozone
 
 RUN corepack enable
 
-# Accept build arguments for NEXT_PUBLIC environment variables
-ARG NEXT_PUBLIC_PLC_DIRECTORY_URL=https://plc.directory
-ARG NEXT_PUBLIC_HANDLE_RESOLVER_URL=https://api.bsky.app
-ARG NEXT_PUBLIC_OZONE_SERVICE_DID
-ARG NEXT_PUBLIC_OZONE_PUBLIC_URL
-
-# Export as environment variables for Next.js build
-ENV NEXT_PUBLIC_PLC_DIRECTORY_URL=${NEXT_PUBLIC_PLC_DIRECTORY_URL}
-ENV NEXT_PUBLIC_HANDLE_RESOLVER_URL=${NEXT_PUBLIC_HANDLE_RESOLVER_URL}
-ENV NEXT_PUBLIC_OZONE_SERVICE_DID=${NEXT_PUBLIC_OZONE_SERVICE_DID}
-ENV NEXT_PUBLIC_OZONE_PUBLIC_URL=${NEXT_PUBLIC_OZONE_PUBLIC_URL}
-
 # Copy dependencies from deps stage
 COPY --from=deps /usr/src/ozone/node_modules ./node_modules
 COPY --from=deps /usr/src/ozone/package.json ./package.json
