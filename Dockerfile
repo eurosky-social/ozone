@@ -9,7 +9,6 @@ COPY package.json yarn.lock .yarnrc.yml ./
 
 # Install all dependencies with cache mount
 RUN --mount=type=cache,target=/root/.yarn,sharing=locked \
-    --mount=type=cache,target=/usr/src/ozone/node_modules/.cache,sharing=locked \
     yarn install --frozen-lockfile
 
 FROM node:20.11-alpine3.18 AS build
@@ -40,8 +39,7 @@ COPY --from=deps /usr/src/ozone/.yarnrc.yml ./.yarnrc.yml
 COPY . .
 
 # Build the application
-RUN --mount=type=cache,target=/usr/src/ozone/node_modules/.cache,sharing=locked \
-    yarn build
+RUN yarn build
 
 # Clean up build artifacts and install production dependencies
 RUN rm -rf node_modules .next/cache
@@ -51,7 +49,7 @@ RUN mv service/package.json package.json && \
     mv service/yarn.lock yarn.lock
 
 RUN --mount=type=cache,target=/root/.yarn,sharing=locked \
-    yarn install --frozen-lockfile --production
+    yarn install --production
 
 # Final stage
 FROM node:20.11-alpine3.18
