@@ -42,7 +42,7 @@ RUN --mount=type=cache,target=/root/.yarn,sharing=locked \
 # Final stage
 FROM node:20.11-alpine3.18
 
-RUN apk add --update dumb-init
+RUN apk add --update dumb-init curl
 ENV TZ=Etc/UTC
 
 WORKDIR /usr/src/ozone
@@ -56,6 +56,10 @@ ENTRYPOINT ["dumb-init", "--"]
 EXPOSE 3000
 ENV OZONE_PORT=3000
 ENV NODE_ENV=production
+
+HEALTHCHECK --interval=10s --timeout=3s --retries=3 --start-period=10s \
+  CMD curl -f http://localhost:3000 || exit 1
+
 USER node
 CMD ["node", "./service"]
 
