@@ -6,5 +6,8 @@
     "@atproto/ozone": "0.1.147",
     "next": "15.2.4",
     "react": "19.1.0"
+  },
+  "resolutions": {
+    "@atproto/ozone@0.1.147": "patch:@atproto/ozone@npm%3A0.1.147#~/.yarn/patches/@atproto-ozone-npm-0.1.147-fix-listen-await.patch"
   }
 }
