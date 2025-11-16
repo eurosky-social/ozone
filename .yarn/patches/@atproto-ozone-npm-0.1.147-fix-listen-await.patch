@@ -1,0 +1,13 @@
+diff --git a/dist/sequencer/sequencer.js b/dist/sequencer/sequencer.js
+index 1111111..2222222 100644
+--- a/dist/sequencer/sequencer.js
++++ b/dist/sequencer/sequencer.js
+@@ -33,7 +33,7 @@ class Sequencer extends node_events_1.default {
+         this.lastSeen = curr ?? 0;
+         this.poll();
+         this.conn = await this.db.pool.connect();
+-        this.conn.query(\`listen \${label_1.LabelChannel}\`); // if this errors, unhandled rejection should cause process to exit
++        await this.conn.query(\`listen \${label_1.LabelChannel}\`); // if this errors, unhandled rejection should cause process to exit
+         this.conn.on('notification', (notif) => {
+             if (notif.channel === label_1.LabelChannel) {
+                 this.poll();
